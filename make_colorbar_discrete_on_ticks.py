@@ -10,6 +10,7 @@ def make_colorbar_discrete_on_ticks(colorbar,objects=None):
     # Your imshow data WILL BE MODIFIED in this method, so do not rely on it afterwards
     from matplotlib.collections import PatchCollection
     from matplotlib.patches import Polygon, Rectangle
+    import numpy as np
     
     cmap = colorbar.get_cmap()
     clim = colorbar.get_clim()
@@ -67,6 +68,11 @@ def make_colorbar_discrete_on_ticks(colorbar,objects=None):
 
             
     if objects is not None:
+        # Flatten the objects if it is an array
+        if isinstance(objects,(np.ndarray,list,tuple)): objects = np.concatenate(objects)
+        # Turn it into an iterable otherwise
+        else: objects = [objects]
+        
         for obj in objects:
             objproperties = obj.properties()
             if 'facecolor' in objproperties.keys(): # This is a PatchCollection
